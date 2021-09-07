@@ -9,8 +9,18 @@ def hello():
   return render_template('home.html')
 
 @socketio.on('connect')
-def handle_my_custom_event(json):
-  print('User connected: ' + str(json))
+def handle_connection(json):
+  socketio.emit('geral', {
+    "user": {
+      "name": "Bot Legal =D"
+    },
+    "message": "o usuário {} entrou no chat".format(json["name"])
+  })
+
+@socketio.on('geral')
+def handle_my_custom_event(data):
+  print(data)
+  socketio.emit('geral', data)
 
 @socketio.on('message')
 def handle_my_custom_event(json):
